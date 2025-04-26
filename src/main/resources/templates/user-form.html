@@ -7,12 +7,21 @@
 <body>
 <h1 th:text="${user.id == null ? 'Create' : 'Edit'} + ' User'"></h1>
 
-<form th:action="@{${user.id == null ? '/users' : '/users/update'}}" method="post">
-    <input type="hidden" name="id" th:value="${user.id}" />
-    <label>Name:</label>
-    <input type="text" name="name" th:value="${user.name}" /><br/>
-    <label>Age:</label>
-    <input type="number" name="age" th:value="${user.age}" /><br/>
+<form th:action="@{${user.id == null ? '/users' : '/users/update'}}" method="post" th:object="${user}">
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label>Name:</label>
+        <input type="text" th:field="*{name}" />
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </div>
+
+    <div>
+        <label>Age:</label>
+        <input type="number" th:field="*{age}" />
+        <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+    </div>
+
     <button type="submit" th:text="${user.id == null ? 'Save' : 'Update'}"></button>
 </form>
 

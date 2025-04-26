@@ -2,8 +2,10 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.User;
 import com.example.demo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -29,7 +31,10 @@ public class UserController {
     }
 
     @PostMapping
-    public String save(@ModelAttribute User user) {
+    public String save(@Valid @ModelAttribute User user, BindingResult binding) {
+        if (binding.hasErrors()) {
+            return "user-form";
+        }
         service.saveUser(user);
         return "redirect:/users";
     }
@@ -41,7 +46,10 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute User user) {
+    public String update(@Valid @ModelAttribute User user, BindingResult binding) {
+        if (binding.hasErrors()) {
+            return "user-form";
+        }
         service.updateUser(user);
         return "redirect:/users";
     }
